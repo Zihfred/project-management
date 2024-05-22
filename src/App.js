@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { Navigate, Route, Routes } from "react-router-dom";
+import MainLayout from "./components/layout/main-layout";
+import AuthProvider from "./providers/auth-provider";
+import Auth from "./pages/auth/auth";
+import RequireAuth from "./components/require-auth/require-auth";
+import Main from "./pages/main/main";
+import Project from "./pages/project/project";
+
+export const routes = {
+  main: "/",
+  auth: "/auth",
+  project: "/project/:id",
+  notFound: "*",
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Routes>
+        <Route path={routes.auth} element={<Auth />} />
+        <Route element={<MainLayout />}>
+          <Route element={<RequireAuth />}>
+            <Route path={"/"} element={<Main />} />
+            <Route path={routes.project} element={<Project />} />
+          </Route>
+        </Route>
+        <Route path={routes.notFound} element={<Navigate to="/" />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

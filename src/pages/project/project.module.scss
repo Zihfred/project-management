@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 10px;
+  .title{
+    text-align: center;
+  }
+  .addTaskWrapper {
+    width: 500px;
+    margin: 0 auto;
+    padding: 20px 0;
+  }
+  .tasksWrapper {
+    width: 600px;
+    margin: auto;
+    overflow: auto;
+  }
+}

@@ -1,0 +1,15 @@
+.wrapper {
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 350px;
+    }
+
+  .error {
+    color: red;
+  }
+  .button {
+    width: 100%;
+  }
+}
