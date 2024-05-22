@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
-import { Button, Card, Checkbox, Flex, Input } from "antd";
+import { Button, Checkbox, Dropdown, Flex, Input } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
+
+import styles from "./task-card.module.scss";
 
 const TaskCard = ({ task, onUpdate, onRemoveTask }) => {
   const [isEditing, setIsEditing] = React.useState(false);
@@ -7,22 +10,47 @@ const TaskCard = ({ task, onUpdate, onRemoveTask }) => {
 
   useEffect(() => {
     setInnerTask(task);
-  }, [task]);
+  }, []);
 
   const onSave = () => {
     onUpdate(innerTask);
     setIsEditing(false);
   };
 
-  const onCompleteChange = () => {
+  const onCheckboxChange = () => {
+    setInnerTask({
+      ...innerTask,
+      completed: !innerTask.completed,
+    });
     onUpdate({
       ...innerTask,
       completed: !innerTask.completed,
     });
   };
 
+  const items = [
+    {
+      key: "1",
+      label: "Edit",
+      onClick: () => {
+        setIsEditing(true);
+      },
+    },
+    {
+      key: "2",
+      label: "Delete",
+      onClick: () => onRemoveTask(task),
+    },
+  ];
+  console.log(innerTask);
   return (
-    <Card style={{ height: "80px" }}>
+    <div
+      data-id={"project"}
+      className={styles.wrapper}
+      onClick={(e) => {
+        e.target.dataset.id === "project" && !isEditing && onRemoveTask(task);
+      }}
+    >
       {isEditing && (
         <Flex
           style={{ height: "30px" }}
@@ -52,6 +80,7 @@ const TaskCard = ({ task, onUpdate, onRemoveTask }) => {
       )}
       {!isEditing && (
         <Flex
+          data-id={"project"}
           style={{ height: "30px" }}
           justify={"space-between"}
           align={"center"}
@@ -59,37 +88,31 @@ const TaskCard = ({ task, onUpdate, onRemoveTask }) => {
         >
           <Flex gap={10}>
             <Checkbox
+              onChange={onCheckboxChange}
               checked={innerTask.completed}
-              onClick={onCompleteChange}
             />
-            <p>
+            <p data-id={"project"}>
               {innerTask?.completed ? (
-                <del>{innerTask?.name}</del>
+                <del>{innerTask.name}</del>
               ) : (
-                innerTask?.name
+                innerTask.name
               )}
             </p>
           </Flex>
-          <Flex gap={10}>
-            <Button
-              onClick={() => {
-                setIsEditing(true);
+          <div className={styles.contextMenu}>
+            <Dropdown
+              menu={{
+                items,
               }}
+              placement="bottomLeft"
+              arrow
             >
-              Edit
-            </Button>
-            <Button
-              danger
-              onClick={() => {
-                onRemoveTask(task);
-              }}
-            >
-              Delete
-            </Button>
-          </Flex>
+              <Button type={"text"} icon={<MoreOutlined />}></Button>
+            </Dropdown>
+          </div>
         </Flex>
       )}
-    </Card>
+    </div>
   );
 };
 

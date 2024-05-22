@@ -1,9 +1,9 @@
 import React from "react";
 import TaskCard from "../task-card/task-card";
-import { Flex } from "antd";
+import { Empty, Flex } from "antd";
 
 const TasksList = ({ tasks, onUpdate, onRemoveTask }) => {
-  if (!tasks?.length) return null;
+  if (!tasks?.length) return <Empty description={"No tasks added"} />;
   return (
     <Flex gap={10} vertical>
       {tasks

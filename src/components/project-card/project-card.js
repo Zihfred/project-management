@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
-import { Button, Card, Flex, Input } from "antd";
+import { Button, Dropdown, Flex, Input } from "antd";
+import styles from "./project-card.module.scss";
+import { MoreOutlined } from "@ant-design/icons";
 
 const ProjectCard = ({ project, onUpdate, onRemoveProject, onOpenProject }) => {
   const [isEditing, setIsEditing] = React.useState(false);
@@ -13,8 +15,32 @@ const ProjectCard = ({ project, onUpdate, onRemoveProject, onOpenProject }) => {
     onUpdate(innerProject);
     setIsEditing(false);
   };
+
+  const items = [
+    {
+      key: "1",
+      label: "Edit",
+      onClick: () => {
+        setIsEditing(true);
+      },
+    },
+    {
+      key: "2",
+      label: "Delete",
+      onClick: () => onRemoveProject(project),
+    },
+  ];
+
   return (
-    <Card style={{ height: "80px" }}>
+    <div
+      data-id={"project"}
+      className={styles.wrapper}
+      onClick={(e) => {
+        e.target.dataset.id === "project" &&
+          !isEditing &&
+          onOpenProject(project);
+      }}
+    >
       {isEditing && (
         <Flex
           style={{ height: "30px" }}
@@ -44,39 +70,27 @@ const ProjectCard = ({ project, onUpdate, onRemoveProject, onOpenProject }) => {
       )}
       {!isEditing && (
         <Flex
+          data-id={"project"}
           style={{ height: "30px" }}
           justify={"space-between"}
           align={"center"}
           gap={10}
         >
-          <p>{project?.name}</p>
-          <Flex gap={10}>
-            <Button
-              onClick={() => {
-                onOpenProject(project);
+          <p data-id={"project"}>{project?.name}</p>
+          <div className={styles.contextMenu}>
+            <Dropdown
+              menu={{
+                items,
               }}
+              placement="bottomLeft"
+              arrow
             >
-              Open
-            </Button>
-            <Button
-              onClick={() => {
-                setIsEditing(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Button
-              danger
-              onClick={() => {
-                onRemoveProject(project);
-              }}
-            >
-              Delete
-            </Button>
-          </Flex>
+              <Button type={"text"} icon={<MoreOutlined />}></Button>
+            </Dropdown>
+          </div>
         </Flex>
       )}
-    </Card>
+    </div>
   );
 };
 

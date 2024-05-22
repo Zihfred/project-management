@@ -26,7 +26,6 @@ export default class ProjectService {
     return projects;
   }
   static async createProject(name) {
-    console.log(name);
     const user = auth.currentUser;
     const newId = uuidv4();
     const tasksRef = collection(firestoreDatabase, "projects");
@@ -89,7 +88,6 @@ export default class ProjectService {
   // return await this.getProjectTasks(projectId);
   // }
   static async addTask(projectId, name) {
-    console.log("add task");
     const newId = uuidv4();
     const tasksRef = collection(firestoreDatabase, "tasks");
     await setDoc(doc(tasksRef, newId), {

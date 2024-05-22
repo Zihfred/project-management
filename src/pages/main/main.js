@@ -38,9 +38,7 @@ const Main = () => {
   return (
     <>
       <h1 className={styles.title}>Projects:</h1>
-      <div className={styles.addProjectWrapper}>
-        <CreateNewItem title={"Add new project"} onSubmit={onAddProject} />
-      </div>
+      <div className={styles.addProjectWrapper}></div>
       <div className={styles.projectsWrapper}>
         <ProjectList
           projects={projects}
@@ -48,6 +46,9 @@ const Main = () => {
           onRemoveProject={onRemoveProject}
           onOpenProject={onOpenProject}
         />
+        <div className={styles.addButton}>
+          <CreateNewItem title={"Add new project"} onSubmit={onAddProject} />
+        </div>
       </div>
     </>
   );

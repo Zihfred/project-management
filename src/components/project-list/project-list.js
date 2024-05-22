@@ -12,7 +12,7 @@ const ProjectList = ({
     <Flex gap={10} vertical>
       {projects?.length > 0 &&
         projects
-          .sort((a, b) => b.created_at - a.created_at)
+          .sort((a, b) => a.created_at - b.created_at)
           .map((project) => (
             <ProjectCard
               key={project.id}

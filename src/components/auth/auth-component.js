@@ -36,7 +36,10 @@ const AuthComponent = ({ error = "error", handleSubmit }) => {
   };
 
   return (
-    <Card className={styles.wrapper} title={"Create account"}>
+    <Card
+      className={styles.wrapper}
+      title={mode === "login" ? "Login" : "Create account"}
+    >
       <div className={styles.content}>
         {mode === "register" && (
           <Input

@@ -42,7 +42,6 @@ const Project = () => {
     fetchProject();
     fetchTasks();
   }, []);
-  console.log(tasks);
   return (
     <div className={styles.wrapper}>
       <Breadcrumb
@@ -53,15 +52,15 @@ const Project = () => {
       />
       <h1 className={styles.title}>{project?.name}</h1>
       <h2 className={styles.title}>Tasks:</h2>
-      <div className={styles.addTaskWrapper}>
-        <CreateNewItem title={"Add new task"} onSubmit={onAddNewTask} />
-      </div>
       <div className={styles.tasksWrapper}>
         <TasksList
           tasks={tasks}
           onUpdate={onUpdateTask}
           onRemoveTask={onRemoveTask}
         />
+        <div className={styles.addTaskWrapper}>
+          <CreateNewItem title={"Add new task"} onSubmit={onAddNewTask} />
+        </div>
       </div>
     </div>
   );

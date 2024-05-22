@@ -3,25 +3,34 @@ import { Button, Flex, Input } from "antd";
 import styles from "./create-new-item.module.scss";
 
 const CreateNewItem = ({ onSubmit, title = "Create new item" }) => {
+  const [active, setActive] = React.useState(false);
   const [value, setValue] = React.useState("");
 
   return (
     <Flex justify={"space-between"} align={"center"}>
-      {title}
-      <Input
-        className={styles.input}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-      <Button
-        disabled={!value.length}
-        onClick={() => {
-          onSubmit(value);
-          setValue("");
-        }}
-      >
-        Create
-      </Button>
+      {!active && (
+        <Button
+          type={"primary"}
+          onClick={() => {
+            setActive(true);
+          }}
+        >
+          {title}
+        </Button>
+      )}
+      {active && (
+        <Input
+          autoFocus
+          className={styles.input}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onPressEnter={() => {
+            onSubmit(value);
+            setValue("");
+            setActive(false);
+          }}
+        />
+      )}
     </Flex>
   );
 };
