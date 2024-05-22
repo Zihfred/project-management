@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Breadcrumb } from "antd";
-import { useNavigate, useParams } from "react-router-dom";
+import { Breadcrumb, Button } from "antd";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import projectService from "../../services/projectService";
 import styles from "./project.module.scss";
 import { routes } from "../../App";
@@ -52,6 +52,11 @@ const Project = () => {
       />
       <h1 className={styles.title}>{project?.name}</h1>
       <h2 className={styles.title}>Tasks:</h2>
+      <div className={styles.backButtonWrapper}>
+        <Link to={routes.main} className={styles.backButton}>
+          <Button type={"text"}>Back to projects</Button>
+        </Link>
+      </div>
       <div className={styles.tasksWrapper}>
         <TasksList
           tasks={tasks}
