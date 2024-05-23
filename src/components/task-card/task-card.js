@@ -44,13 +44,7 @@ const TaskCard = ({ task, onUpdate, onRemoveTask }) => {
   ];
   console.log(innerTask);
   return (
-    <div
-      data-id={"project"}
-      className={styles.wrapper}
-      onClick={(e) => {
-        e.target.dataset.id === "project" && !isEditing && onRemoveTask(task);
-      }}
-    >
+    <div data-id={"project"} className={styles.wrapper}>
       {isEditing && (
         <Flex
           style={{ height: "30px" }}

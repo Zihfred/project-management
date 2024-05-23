@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { Button, Card, Input } from "antd";
 import styles from "./auth-component.module.scss";
 
-const AuthComponent = ({ error = "error", handleSubmit }) => {
-  const [mode, setMode] = React.useState("login");
+const AuthComponent = ({ error, handleSubmit, mode, toggleMode }) => {
   const [userData, setUserData] = React.useState({
     name: "",
     email: "",
@@ -66,13 +65,7 @@ const AuthComponent = ({ error = "error", handleSubmit }) => {
         <Button type={"primary"} className={styles.button} onClick={onSubmit}>
           {mode === "login" ? "Login" : "Create account"}
         </Button>
-        <Button
-          type={"link"}
-          className={styles.button}
-          onClick={() =>
-            setMode((prev) => (prev === "login" ? "register" : "login"))
-          }
-        >
+        <Button type={"link"} className={styles.button} onClick={toggleMode}>
           {mode === "login"
             ? "Didn't have an account? Register"
             : "Already have an account? Login"}

@@ -8,6 +8,7 @@ const ProjectList = ({
   onRemoveProject,
   onOpenProject,
 }) => {
+  console.log(projects);
   return (
     <Flex gap={10} vertical>
       {projects?.length > 0 &&

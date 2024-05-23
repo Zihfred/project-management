@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Breadcrumb, Button } from "antd";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Button } from "antd";
+import { Link, useParams } from "react-router-dom";
 import projectService from "../../services/projectService";
 import styles from "./project.module.scss";
 import { routes } from "../../App";
@@ -9,7 +9,6 @@ import CreateNewItem from "../../components/create-new-item/create-new-item";
 
 const Project = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [project, setProject] = React.useState("");
   const [tasks, setTasks] = React.useState([]);
 
@@ -44,20 +43,13 @@ const Project = () => {
   }, []);
   return (
     <div className={styles.wrapper}>
-      <Breadcrumb
-        items={[
-          { title: "Project", onClick: () => navigate(routes.main) },
-          { title: project?.name || id },
-        ]}
-      />
-      <h1 className={styles.title}>{project?.name}</h1>
-      <h2 className={styles.title}>Tasks:</h2>
       <div className={styles.backButtonWrapper}>
         <Link to={routes.main} className={styles.backButton}>
           <Button type={"text"}>Back to projects</Button>
         </Link>
       </div>
       <div className={styles.tasksWrapper}>
+        <h1>{project?.name}</h1>
         <TasksList
           tasks={tasks}
           onUpdate={onUpdateTask}

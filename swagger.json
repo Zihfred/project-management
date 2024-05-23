@@ -1,0 +1,1126 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "task-manager API",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://maiores-795494.myapi.rocks"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Project",
+      "description": "Operations related to projects"
+    },
+    {
+      "name": "Task",
+      "description": "Operations related to tasks"
+    },
+    {
+      "name": "User",
+      "description": "Operations related to users"
+    }
+  ],
+  "paths": {
+    "/signup": {
+      "post": {
+        "operationId": "signupUser",
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "An identifier formatted as UUID.",
+                      "example": "0d2ae625-934b-4899-bb85-e801704e8aa0"
+                    },
+                    "password": {
+                      "description": "Some description for password.",
+                      "example": "Some example for password.",
+                      "type": "string"
+                    },
+                    "email": {
+                      "description": "Some description for email.",
+                      "example": "Some example for email.",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Some description for name.",
+                      "example": "Some example for name.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "andrew@leansquad.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "Password123!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "operationId": "loginUser",
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1N...4sPTextM"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid email/password combination."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "andrew@leansquad.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "Password123!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "operationId": "getUsers",
+        "responses": {
+          "200": {
+            "description": "User fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "An identifier formatted as UUID.",
+                        "example": "0d2ae625-934b-4899-bb85-e801704e8aa0"
+                      },
+                      "password": {
+                        "description": "Some description for password.",
+                        "example": "Some example for password.",
+                        "type": "string"
+                      },
+                      "email": {
+                        "description": "Some description for email.",
+                        "example": "Some example for email.",
+                        "type": "string"
+                      },
+                      "name": {
+                        "description": "Some description for name.",
+                        "example": "Some example for name.",
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "patch": {
+        "operationId": "patchUser",
+        "responses": {
+          "200": {
+            "description": "User patched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "An identifier formatted as UUID.",
+                      "example": "0d2ae625-934b-4899-bb85-e801704e8aa0"
+                    },
+                    "password": {
+                      "description": "Some description for password.",
+                      "example": "Some example for password.",
+                      "type": "string"
+                    },
+                    "email": {
+                      "description": "Some description for email.",
+                      "example": "Some example for email.",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Some description for name.",
+                      "example": "Some example for name.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "description": "Some description for password.",
+                    "example": "Some example for password.",
+                    "type": "string"
+                  },
+                  "email": {
+                    "description": "Some description for email.",
+                    "example": "Some example for email.",
+                    "type": "string"
+                  },
+                  "name": {
+                    "description": "Some description for name.",
+                    "example": "Some example for name.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects": {
+      "post": {
+        "operationId": "createProject",
+        "responses": {
+          "201": {
+            "description": "Project created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "An identifier formatted as UUID.",
+                      "example": "0d2ae625-934b-4899-bb85-e801704e8aa0"
+                    },
+                    "name": {
+                      "description": "Some description for name.",
+                      "example": "Some example for name.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Some description for name.",
+                    "example": "Some example for name.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getProjects",
+        "responses": {
+          "200": {
+            "description": "Project fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "An identifier formatted as UUID.",
+                        "example": "0d2ae625-934b-4899-bb85-e801704e8aa0"
+                      },
+                      "name": {
+                        "description": "Some description for name.",
+                        "example": "Some example for name.",
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ]
+      }
+    },
+    "/projects/{id}": {
+      "get": {
+        "operationId": "getProjectById",
+        "responses": {
+          "200": {
+            "description": "Project fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "An identifier formatted as UUID.",
+                      "example": "0d2ae625-934b-4899-bb85-e801704e8aa0"
+                    },
+                    "name": {
+                      "description": "Some description for name.",
+                      "example": "Some example for name.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Project not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "patchProject",
+        "responses": {
+          "200": {
+            "description": "Project patched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "An identifier formatted as UUID.",
+                      "example": "0d2ae625-934b-4899-bb85-e801704e8aa0"
+                    },
+                    "name": {
+                      "description": "Some description for name.",
+                      "example": "Some example for name.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Project not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Some description for name.",
+                    "example": "Some example for name.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteProject",
+        "responses": {
+          "200": {
+            "description": "Project deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Project deleted."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Project not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/projects/{project_id}/tasks": {
+      "post": {
+        "operationId": "createTask",
+        "responses": {
+          "201": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "An identifier formatted as UUID.",
+                      "example": "0d2ae625-934b-4899-bb85-e801704e8aa0"
+                    },
+                    "name": {
+                      "description": "Some description for name.",
+                      "example": "Some example for name.",
+                      "type": "string"
+                    },
+                    "completed": {
+                      "description": "Some description for completed.",
+                      "example": "Some example for completed.",
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "description": "project_id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Some description for name.",
+                    "example": "Some example for name.",
+                    "type": "string"
+                  },
+                  "completed": {
+                    "description": "Some description for completed.",
+                    "example": "Some example for completed.",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getTasks",
+        "responses": {
+          "200": {
+            "description": "Task fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "An identifier formatted as UUID.",
+                        "example": "0d2ae625-934b-4899-bb85-e801704e8aa0"
+                      },
+                      "name": {
+                        "description": "Some description for name.",
+                        "example": "Some example for name.",
+                        "type": "string"
+                      },
+                      "completed": {
+                        "description": "Some description for completed.",
+                        "example": "Some example for completed.",
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "description": "project_id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "operationId": "getTaskById",
+        "responses": {
+          "200": {
+            "description": "Task fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "An identifier formatted as UUID.",
+                    "example": "0d2ae625-934b-4899-bb85-e801704e8aa0"
+                  },
+                  "name": {
+                    "description": "Some description for name.",
+                    "example": "Some example for name.",
+                    "type": "string"
+                  },
+                  "completed": {
+                    "description": "Some description for completed.",
+                    "example": "Some example for completed.",
+                    "type": "boolean"
+                  }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Task not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Task not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "patchTask",
+        "responses": {
+          "200": {
+            "description": "Task patched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "An identifier formatted as UUID.",
+                      "example": "0d2ae625-934b-4899-bb85-e801704e8aa0"
+                    },
+                    "name": {
+                      "description": "Some description for name.",
+                      "example": "Some example for name.",
+                      "type": "string"
+                    },
+                    "completed": {
+                      "description": "Some description for completed.",
+                      "example": "Some example for completed.",
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Task not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Task not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Some description for name.",
+                    "example": "Some example for name.",
+                    "type": "string"
+                  },
+                  "completed": {
+                    "description": "Some description for completed.",
+                    "example": "Some example for completed.",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTask",
+        "responses": {
+          "200": {
+            "description": "Task deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Task deleted."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Task not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Task not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access. User should be logged in to access this endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Project": {
+        "type": "object",
+        "description": "Some description for Project.",
+        "properties": {
+          "name": {
+            "description": "Some description for string.",
+            "type": "string"
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "description": "Some description for Task.",
+        "properties": {
+          "name": {
+            "description": "Some description for string.",
+            "type": "string"
+          },
+          "completed": {
+            "description": "Some description for boolean.",
+            "type": "boolean"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "description": "Some description for User.",
+        "properties": {
+          "password": {
+            "description": "Some description for string.",
+            "type": "string"
+          },
+          "email": {
+            "description": "Some description for string.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Some description for string.",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": [
+
+      ]
+    }
+  ]
+}

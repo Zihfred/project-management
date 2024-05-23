@@ -1,13 +1,7 @@
 import { createContext, useEffect, useState } from "react";
-import { auth } from "../firebase";
-import {
-  onAuthStateChanged,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  updateProfile,
-} from "firebase/auth";
+import { UserApi } from "../services/generated/index.ts";
 
+const API = new UserApi();
 let AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
@@ -15,35 +9,34 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const createUser = async ({ email, password, name }) => {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-
-    if (result) {
-      await updateProfile(result.user, { displayName: name });
-      setUser({ ...result.user, displayName: name });
-    }
+    return await API.signupUser({ email, password, name });
   };
 
   const login = async ({ email, password }) => {
-    const result = await signInWithEmailAndPassword(auth, email, password);
+    const result = await API.loginUser({ email, password });
 
     if (result) {
-      setUser(result.user);
+      localStorage.setItem("access_token", result.data.access_token);
+      const user = await API.getUsers();
+
+      setUser({ ...user.data });
+      setLoading(false);
     }
   };
 
   const logout = async () => {
-    await signOut(auth);
     setUser(null);
+    localStorage.removeItem("access_token");
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      }
-      setLoading(false);
-    });
-    return () => unsubscribe();
+    if (user === null && localStorage.getItem("access_token")?.length) {
+      setLoading(true);
+      API.getUsers().then((user) => {
+        setUser(user.data);
+        setLoading(false);
+      });
+    }
   }, []);
 
   return (

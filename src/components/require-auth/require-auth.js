@@ -4,9 +4,9 @@ import { routes } from "../../App";
 import { Navigate, Outlet } from "react-router-dom";
 
 const RequireAuth = () => {
-  const auth = useAuth();
-  if (auth.isLoading) return <div>Loading...</div>;
-  return auth.user ? <Outlet /> : <Navigate to={routes.auth} />;
+  const { user, isLoading } = useAuth();
+  if (isLoading) return <div>Loading...</div>;
+  return user ? <Outlet /> : <Navigate to={routes.auth} />;
 };
 
 export default RequireAuth;

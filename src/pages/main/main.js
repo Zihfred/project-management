@@ -37,9 +37,8 @@ const Main = () => {
 
   return (
     <>
-      <h1 className={styles.title}>Projects:</h1>
-      <div className={styles.addProjectWrapper}></div>
       <div className={styles.projectsWrapper}>
+        <h1>Projects</h1>
         <ProjectList
           projects={projects}
           onUpdateProject={onUpdateProject}

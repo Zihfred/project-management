@@ -1,116 +1,55 @@
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  serverTimestamp,
-  setDoc,
-  getDoc,
-  deleteDoc,
-  where,
-} from "firebase/firestore";
-import { auth, firestoreDatabase } from "../firebase";
-import { v4 as uuidv4 } from "uuid";
+import { ProjectApi, TaskApi } from "../services/generated/index.ts";
 
+const projectAPI = new ProjectApi();
+const tasksAPI = new TaskApi();
 export default class ProjectService {
   static async getProjects() {
-    const projects = [];
-    const user = auth.currentUser;
-    const tasksRef = collection(firestoreDatabase, "projects");
-    const q = query(tasksRef, where("user_id", "==", user?.uid));
-    const projectsSnapshot = await getDocs(q);
-
-    projectsSnapshot.forEach((doc) => {
-      projects.push(doc.data());
-    });
-    return projects;
+    const projects = await projectAPI.getProjects();
+    return projects.data;
   }
   static async createProject(name) {
-    const user = auth.currentUser;
-    const newId = uuidv4();
-    const tasksRef = collection(firestoreDatabase, "projects");
-    await setDoc(doc(tasksRef, newId), {
-      name: name || "New Project",
-      user_id: user?.uid,
-      id: newId,
-      created_at: serverTimestamp(),
+    await projectAPI.createProject({
+      name,
     });
     return await this.getProjects();
   }
 
   static async updateProject(id, data) {
-    const user = auth.currentUser;
-    const tasksRef = collection(firestoreDatabase, "projects");
-    await setDoc(doc(tasksRef, id), {
-      ...data,
-      user_id: user?.uid,
-      updated_at: serverTimestamp(),
-    });
+    await projectAPI.patchProject(id, { name: data.name });
     return await this.getProjects();
   }
 
   static async deleteProject(id) {
-    const tasksRef = collection(firestoreDatabase, "projects");
-    await deleteDoc(doc(tasksRef, id));
+    await projectAPI.deleteProject(id);
     return await this.getProjects();
   }
 
   static async getProjectById(id) {
-    const tasksRef = collection(firestoreDatabase, "projects");
-    const docRef = doc(tasksRef, id);
-    const docSnap = await getDoc(docRef);
-    return docSnap.data();
+    const project = await projectAPI.getProjectById(id);
+    return project.data;
   }
 
   static async getProjectTasks(id) {
-    const tasks = [];
-    const tasksRef = collection(firestoreDatabase, "tasks");
-    const q = query(tasksRef, where("project_id", "==", id));
-    const tasksSnapshot = await getDocs(q);
-
-    tasksSnapshot.forEach((doc) => {
-      tasks.push(doc.data());
-    });
-    return tasks;
+    const tasks = await tasksAPI.getTasks(id);
+    return tasks.data;
   }
-
-  // static async addTask(projectId, task) {
-  // console.log(projectId, task);
-  // const newId = uuidv4();
-  // const tasksRef = collection(firestoreDatabase, "tasks");
-  // await setDoc(doc(tasksRef, newId), {
-  //   project_id: projectId,
-  //   completed: false,
-  //   id: newId,
-  //   name: task,
-  //   created_at: serverTimestamp(),
-  // });
-  // return await this.getProjectTasks(projectId);
-  // }
   static async addTask(projectId, name) {
-    const newId = uuidv4();
-    const tasksRef = collection(firestoreDatabase, "tasks");
-    await setDoc(doc(tasksRef, newId), {
+    await tasksAPI.createTask(projectId, {
       name: name,
-      project_id: projectId,
       completed: false,
-      id: newId,
-      created_at: serverTimestamp(),
     });
     return await this.getProjectTasks(projectId);
   }
 
   static async updateTask(projectId, data) {
-    const tasksRef = collection(firestoreDatabase, "tasks");
-    await setDoc(doc(tasksRef, data.id), {
-      ...data,
-      updated_at: serverTimestamp(),
+    await tasksAPI.patchTask(data.id, {
+      name: data.name,
+      completed: data.completed,
     });
     return await this.getProjectTasks(projectId);
   }
   static async deleteTask(projectId, taskId) {
-    const tasksRef = collection(firestoreDatabase, "tasks");
-    await deleteDoc(doc(tasksRef, taskId));
+    await tasksAPI.deleteTask(taskId);
     return await this.getProjectTasks(projectId);
   }
 }
