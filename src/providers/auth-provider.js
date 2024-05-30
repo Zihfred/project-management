@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
-import { UserApi } from "../services/generated/index.ts";
+import { createUserRequest, getUser, loginUser } from "../services/userService";
 
-const API = new UserApi();
 let AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
@@ -9,17 +8,22 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const createUser = async ({ email, password, name }) => {
-    return await API.signupUser({ email, password, name });
+    const response = await createUserRequest({ email, password, name });
+
+    if (response) {
+      localStorage.setItem("access_token", response.jwt);
+      setUser(response.user);
+      setLoading(false);
+    }
   };
 
   const login = async ({ email, password }) => {
-    const result = await API.loginUser({ email, password });
+    const response = await loginUser({ email, password });
 
-    if (result) {
-      localStorage.setItem("access_token", result.data.access_token);
-      const user = await API.getUsers();
+    if (response) {
+      localStorage.setItem("access_token", response.jwt);
 
-      setUser({ ...user.data });
+      setUser(response.user);
       setLoading(false);
     }
   };
@@ -29,13 +33,15 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("access_token");
   };
 
+  const getUserProfile = async () => {
+    const user = await getUser();
+    setUser(user);
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (user === null && localStorage.getItem("access_token")?.length) {
-      setLoading(true);
-      API.getUsers().then((user) => {
-        setUser(user.data);
-        setLoading(false);
-      });
+      getUserProfile();
     }
   }, []);
 

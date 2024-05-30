@@ -10,37 +10,31 @@ import CreateNewItem from "../../components/create-new-item/create-new-item";
 const Project = () => {
   const { id } = useParams();
   const [project, setProject] = React.useState("");
-  const [tasks, setTasks] = React.useState([]);
 
   const fetchProject = async () => {
     const project = await projectService.getProjectById(id);
     setProject(project);
   };
 
-  const fetchTasks = async () => {
-    const tasks = await projectService.getProjectTasks(id);
-    setTasks(tasks);
-  };
-
   const onRemoveTask = async (task) => {
     const res = await projectService.deleteTask(project.id, task.id);
-    setTasks(res);
+    setProject(res);
   };
 
   const onUpdateTask = async (task) => {
     const res = await projectService.updateTask(project.id, task);
-    setTasks(res);
+    setProject(res);
   };
 
   const onAddNewTask = async (task) => {
     const res = await projectService.addTask(project.id, task);
-    setTasks(res);
+    setProject(res);
   };
 
   useEffect(() => {
     fetchProject();
-    fetchTasks();
   }, []);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.backButtonWrapper}>
@@ -49,9 +43,9 @@ const Project = () => {
         </Link>
       </div>
       <div className={styles.tasksWrapper}>
-        <h1>{project?.name}</h1>
+        <h1>{project?.attributes?.name}</h1>
         <TasksList
-          tasks={tasks}
+          tasks={project?.tasks}
           onUpdate={onUpdateTask}
           onRemoveTask={onRemoveTask}
         />

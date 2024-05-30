@@ -4,6 +4,7 @@ import AuthComponent from "../../components/auth/auth-component";
 import styles from "./auth.module.scss";
 import { routes } from "../../App";
 import { Navigate } from "react-router-dom";
+import { extractErrorMessages } from "../../helpers";
 
 const Auth = () => {
   const [mode, setMode] = React.useState("login");
@@ -23,7 +24,7 @@ const Auth = () => {
       try {
         await login(userData);
       } catch (error) {
-        setError(error.response.data.message);
+        setError(extractErrorMessages(error.response.data).join(", "));
       }
     } else {
       try {

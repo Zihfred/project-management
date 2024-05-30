@@ -50,7 +50,7 @@ const ProjectCard = ({ project, onUpdate, onRemoveProject, onOpenProject }) => {
         >
           <Input
             autoFocus
-            value={innerProject.name}
+            value={innerProject?.name}
             onChange={(e) =>
               setInnerProject({
                 ...innerProject,
@@ -76,7 +76,7 @@ const ProjectCard = ({ project, onUpdate, onRemoveProject, onOpenProject }) => {
           align={"center"}
           gap={10}
         >
-          <p data-id={"project"}>{project?.name}</p>
+          <p data-id={"project"}>{innerProject?.name}</p>
           <div className={styles.contextMenu}>
             <Dropdown
               menu={{

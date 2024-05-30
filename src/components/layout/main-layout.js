@@ -8,12 +8,11 @@ const { Header, Content } = Layout;
 
 const MainLayout = () => {
   const { user, logout } = useAuth();
-  console.log(user);
   const items = [
     {
       key: "1",
       disabled: true,
-      label: `Hi ${user?.name || "User"}`,
+      label: `Hi ${user?.fullName || "User"}`,
     },
     {
       key: "2",

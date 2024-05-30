@@ -42,7 +42,6 @@ const TaskCard = ({ task, onUpdate, onRemoveTask }) => {
       onClick: () => onRemoveTask(task),
     },
   ];
-  console.log(innerTask);
   return (
     <div data-id={"project"} className={styles.wrapper}>
       {isEditing && (
